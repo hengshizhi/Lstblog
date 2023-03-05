@@ -1,0 +1,13 @@
+这个是一个聊天室项目
+有4个系统：API系统，文件系统，数据库(操作)系统，前端系统
+这里是API系统和数据库操作系统
+数据库连接串：mysql+pymysql://root@localhost:3306/lstblog
+目录结构：
+app.py -- 项目入口文件，回调API类
+api.py -- API 回调其它系统的类，API类
+mod/ -- 模组
+bd/ -- 数据库操作系统
+    mysql.py -- 数据库操作类
+    user.py -- 操作数据库user表
+    ChatData/ -- 聊天室系统
+        ...暂时不开发

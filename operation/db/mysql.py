@@ -36,7 +36,7 @@ def get_session():
         s.close()
 
 class table(): #表类
-    class User(table_data.User,Base):
-        pass
+    class User(table_data.User,Base):pass
+    class session(table_data.session,Base):pass
 
 Base.metadata.create_all(engine) #创建表结构

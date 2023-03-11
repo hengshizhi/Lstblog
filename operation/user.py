@@ -101,14 +101,14 @@ def get_data(id,name,postbox):
         return data.single_to_dict() #将结果转换成dict
 class api():
     config = configs.Email_login()
-    def Email_login_Verification(self,id=False,name=False,postbox=False): #获取验证码(登录)并且发送
+    def login_Verification(self,id=False,name=False,postbox=False): #获取验证码(登录)并且发送
         data = get_data(id,name,postbox)
-        Verification = random.randint(1, 5000000)
-        print(data)
+        Verification = random.randint(1, 5000000) #获取验证码
+        # print(data)
         if(data != None):
             try:
                 mail.send(self.config.TEMPlate
-                        .format(Verification=random.randint(1, 5000000),
+                        .format(Verification=Verification,
                                 nickname = data['nickname'],
                                 name = data['name'],
                                 websiteName = config.name
@@ -124,6 +124,8 @@ class api():
                 return False #邮件发送失败
         else:
             return None #不存在此用户
-        return True #成功
+        return Verification #成功,返回验证码
+    def login_SendEmainVerification_API(get_or_post,session): #发送验证码并且储存验证码的API
+        user_name = get_or_post('user_name')
 a = api()
-print(a.Email_login(id=1677914935))
+print(registered_record(postbox='aaa'))

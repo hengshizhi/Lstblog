@@ -46,3 +46,9 @@ class User(BaseMixin):
     nickname = Column(String(32)) #昵称
     Joined = Column(String(32)) #加入的聊天室
     HeadPortrait = Column(String(32)) #头像(url)
+
+class session(BaseMixin): #会话
+    __tablename__ = "session" #表名
+    # key = Column(String(64),nullable=False,primary_key=True)
+    id = Column(String(64),nullable=False,primary_key=True)
+    data = Column(String(64)) #会话内容

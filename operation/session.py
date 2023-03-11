@@ -31,10 +31,12 @@ class session():
             s.commit()
             self.key = session.id
             return session.id
-    def get(self): #得到数据库里面的session
+    def getDB(self): #得到数据库里面的session
         with get_session() as s:
             self.data = s.query(session_db).filter(session_db.id == self.key,
             session_db.deleted_at==None).first().dobule_to_dict()['data'] # 查询数据库
+            print('DATA:',s.query(session_db).filter(session_db.id == self.key,
+            session_db.deleted_at==None).first().dobule_to_dict())
             if(self.data != None):
                 self.data = json.loads(self.data) #编码成json
             else:
@@ -44,7 +46,30 @@ class session():
         with get_session() as s:
             s.query(session_db).filter(session_db.id == self.key).update({'data': json.dumps(self.data),
                                                                              'updated_at':time.time()})
-
+    def Set(self,key,value):
+        try:self.data[key] = value
+        except:
+            self.data['Verification'] = None
+            self.data[key] = value
+    def delete(self,key):
+        '''删除session值:
+        session = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+        > key=['a', 'c']
+        > session
+        {'b': 2, 'd': 4}
+        > key = 'b'
+        > session
+        {'d': 4} 
+        '''
+        if(str(type(key)) == "<class 'list'>"):
+            for i in key:
+                del self.data[i]
+        else:
+            del self.data[key]
+    def get(self, key):
+        try:return self.data[key]
+        except:return None
+        #return [value for value in map(lambda index: self.data.pop(index) if self.data.get(index) else None, ['a', 'c'])]
 # 7cfcc5ec-7406-4963-997f-48ab2ba8d7aa
 # print(create())
 # session_app = session('7cfcc5ec-7406-4963-997f-48ab2ba8d7aa')

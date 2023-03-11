@@ -6,10 +6,12 @@ try:
     from config import main_config as main_config
     config = main_config()
 except:
-    from .config import config as config
-    config = config.main_config()
+    from .config import main_config as main_config
+    config = main_config()
 class mail():
     def __init__(self):
+        self.connection()
+    def connection(self):
         # 创建 SMTP 对象
         self.smtp = smtplib.SMTP()
         # 连接（connect）指定服务器
@@ -29,7 +31,10 @@ class mail():
         message['To'] = Header(target['nickname'], config.encoding)  # 收件人的昵称
         message['Subject'] = Header(theme, config.encoding)  # 定义主题内容
         # print(message)
-        self.smtp.sendmail(from_addr=config.from_addr, to_addrs=target['address'], msg=message.as_string())
-# main = main()
-# for i in range(1000):
-#     main.send('你要干嘛','哈哈哈',{'nickname':'xingzhi'})
+        try:
+            self.smtp.sendmail(from_addr=config.from_addr, to_addrs=target['address'], msg=message.as_string())
+        except:
+            self.connection()
+            self.smtp.sendmail(from_addr=config.from_addr, to_addrs=target['address'], msg=message.as_string())
+# main = mail()
+# main.send('你要干嘛','哈哈哈',{'nickname':'xingzhi','address':'xh-xhsz@foxmail.com'})

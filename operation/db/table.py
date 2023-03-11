@@ -8,13 +8,14 @@ from sqlalchemy import (
     Integer,
     DateTime,
     String,
+    TIMESTAMP
 )
-
+from sqlalchemy.sql import func
 class BaseMixin:
     """model的基类,所有model都必须继承"""
     id = Column(Integer, primary_key=True)
-    created_at = Column(Integer, nullable=False)
-    updated_at = Column(Integer, nullable=False, index=True)
+    created_at = Column(DateTime, nullable=False, server_default=func.now())
+    updated_at = Column(TIMESTAMP, nullable=False)
     deleted_at = Column(Integer)  # 可以为空, 如果非空, 则为软删
     # 单个对象方法1
     # def to_dict(self):
@@ -46,9 +47,11 @@ class User(BaseMixin):
     nickname = Column(String(32)) #昵称
     Joined = Column(String(32)) #加入的聊天室
     HeadPortrait = Column(String(32)) #头像(url)
+    mail_validation = Column(Integer,nullable=False,server_default='0') # 是否验证了电子邮件
+    banned = Column(Integer,nullable=False,server_default='0') # 是否封禁
 
 class session(BaseMixin): #会话
     __tablename__ = "session" #表名
     # key = Column(String(64),nullable=False,primary_key=True)
     id = Column(String(64),nullable=False,primary_key=True)
-    data = Column(String(64)) #会话内容
+    data = Column(String(255),comment='{}') #会话内容

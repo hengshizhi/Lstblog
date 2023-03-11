@@ -1,14 +1,12 @@
 try:
     from sanic import Sanic #导入sanic web的本体
     from sanic.response import text,html,json,file,raw,file_stream,redirect,empty #导入sanic web的工具类
-    import mod.md5 as md5 #导入md5操作
     import api as api_main
     # from operation.session import Session
 except:
     import autoinstall
     from sanic import Sanic #导入sanic web的本体
     from sanic.response import text,html,json,file,raw,file_stream,redirect,empty #导入sanic web的工具类
-    import mod.md5 as md5 #导入md5操作
     import api as api_main
     # from operation.session import Session #导入会话
 config = {'host':'127.0.0.1',
@@ -37,7 +35,9 @@ async def favicon(request):
 async def api(request,name): #API执行函数
     data = api_main.main(request,name)
     ret = data['data']
-    ret.cookies['Session_key'] = data['cookie']['Session_key']
+    for k,v in data['cookie'].items(): #设置cookie
+        ret.cookies[k] = v
+    print(ret)
     if(data['async']):
         return await ret
     else:
